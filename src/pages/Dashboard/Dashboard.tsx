@@ -4,26 +4,37 @@ import { mockApi } from "@/api/mockApi";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
 import { useNavigate } from "react-router";
 import { Spinner } from "@/components/common/Spinner/Spinner";
+import { ErrorMessage } from "@/components/common/Error/ErrorMessage";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { token } = useToken();
-  const { createConversation, loading } = useConversationsContext();
+  const { createConversation } = useConversationsContext();
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const send = async (message: string) => {
+    setLoading(true);
     try {
       const result = await mockApi.createConversation(token, message);
       createConversation(result.conversation);
       navigate(`/chat/${result.conversation.id}`);
     } catch (error) {
       console.error(error);
+      setError(true);
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-3xl mx-auto w-full p-6 pt-44 relative h-fit">
-      {loading ? (
-        <Spinner size={36} />
-      ) : (
+      {loading && <Spinner size={36} />}
+      {!loading && error && (
+        <div className="mb-8">
+          <ErrorMessage />
+        </div>
+      )}
+      {!loading && (
         <>
           <p className="text-3xl text-center mb-6">Hey! How's everything?</p>
           <InputChat sendFn={send} placeholder={"How can I help you today?"} />
