@@ -17,7 +17,7 @@ export const useMessages = (conversationId: string) => {
     return getMessages(conversationId);
   };
 
-  useEffect(() => {
+  const conversationHandler = () => {
     const fetchConversation = async () => {
       if (!token || !conversationId) return;
       try {
@@ -43,6 +43,10 @@ export const useMessages = (conversationId: string) => {
     } else {
       fetchConversation();
     }
+  };
+
+  useEffect(() => {
+    conversationHandler();
   }, [token, conversationId]);
 
   const getNewConversationMessage = () => {
@@ -91,5 +95,6 @@ export const useMessages = (conversationId: string) => {
     isTyping,
     error,
     loading,
+    retrySend: sendMessage,
   };
 };

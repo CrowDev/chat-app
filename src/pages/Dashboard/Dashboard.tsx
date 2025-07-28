@@ -12,8 +12,9 @@ const Dashboard = () => {
   const { createConversation } = useConversationsContext();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
-  const send = async (message: string) => {
+  const send = async () => {
     setLoading(true);
     try {
       const result = await mockApi.createConversation(token, message);
@@ -37,7 +38,11 @@ const Dashboard = () => {
       {!loading && (
         <>
           <p className="text-3xl text-center mb-6">Hey! How's everything?</p>
-          <InputChat sendFn={send} placeholder={"How can I help you today?"} />
+          <InputChat
+            sendFn={send}
+            setMessage={setMessage}
+            placeholder={"How can I help you today?"}
+          />
         </>
       )}
     </div>

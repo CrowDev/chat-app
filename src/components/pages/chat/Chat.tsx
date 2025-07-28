@@ -3,18 +3,28 @@ import type { Message } from "@/types";
 import { InputChat } from "@/components/common/InputChat/InputChat";
 import { useMessages } from "@/hooks/useMessages";
 import { Dot } from "lucide-react";
+import { ErrorSendMessage } from "@/components/common/Error/ErrorSendMessage";
+import { useState } from "react";
 
 export const Chat = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState<string | null>(null);
   const { conversationId } = useParams();
   if (!conversationId) {
     navigate("/chat");
     return;
   }
-  const { messages, sendMessage, isTyping } = useMessages(conversationId);
+  const { messages, sendMessage, isTyping, error, retrySend } =
+    useMessages(conversationId);
 
-  const handleSendMessage = async (message: string) => {
-    sendMessage(message);
+  const handleSendMessage = async () => {
+    if (message) {
+      sendMessage(message);
+    }
+  };
+
+  const refetch = () => {
+    if (message) retrySend(message);
   };
 
   return (
@@ -43,8 +53,9 @@ export const Chat = () => {
             </div>
           </li>
         )}
+        {error && <ErrorSendMessage refetch={refetch} />}
       </ul>
-      <InputChat sendFn={handleSendMessage} />
+      <InputChat sendFn={handleSendMessage} setMessage={setMessage} />
     </div>
   );
 };

@@ -2,13 +2,15 @@ import { useRef } from "react";
 import { Send } from "lucide-react";
 
 interface IProps {
-  sendFn: (message: string) => void;
+  sendFn: () => void;
   placeholder?: string;
+  setMessage: (message: string) => void;
 }
 
 export const InputChat = ({
   sendFn,
   placeholder = "Answer to ChatApp...",
+  setMessage,
 }: IProps) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -17,6 +19,14 @@ export const InputChat = ({
     inputRef.current.focus();
   };
 
+  const handleClick = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    sendFn();
+  };
+
+  // TODO: add a debounce for input
   return (
     <div className={`flex w-full gap-5`}>
       <div
@@ -28,12 +38,10 @@ export const InputChat = ({
           placeholder={placeholder}
           className="focus:outline-none w-full h-15"
           rows={2}
+          onChange={() => setMessage(inputRef.current?.value as string)}
         ></textarea>
       </div>
-      <button
-        type="button"
-        onClick={() => sendFn(inputRef.current?.value as string)}
-      >
+      <button type="button" onClick={handleClick}>
         <Send />
       </button>
     </div>
