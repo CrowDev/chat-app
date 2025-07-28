@@ -1,11 +1,17 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import type { Message } from "@/types";
 import { InputChat } from "@/components/common/InputChat/InputChat";
 import { useMessages } from "@/hooks/useMessages";
+import { Dot } from "lucide-react";
 
 export const Chat = () => {
+  const navigate = useNavigate();
   const { conversationId } = useParams();
-  const { messages, sendMessage } = useMessages(conversationId);
+  if (!conversationId) {
+    navigate("/chat");
+    return;
+  }
+  const { messages, sendMessage, isTyping } = useMessages(conversationId);
 
   const handleSendMessage = async (message: string) => {
     sendMessage(message);
@@ -28,6 +34,15 @@ export const Chat = () => {
             </li>
           );
         })}
+        {isTyping && (
+          <li className={`flex justify-start`}>
+            <div className="flex gap-0.5 bg-slate-600 rounded-lg p-2 w-fit">
+              <Dot className="animate-bounce" size={16} />
+              <Dot className="animate-bounce" size={16} />
+              <Dot className="animate-bounce" size={16} />
+            </div>
+          </li>
+        )}
       </ul>
       <InputChat sendFn={handleSendMessage} />
     </div>
