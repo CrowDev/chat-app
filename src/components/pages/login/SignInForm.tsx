@@ -1,5 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { mockApi } from "@/api/mockApi";
+import { useNavigate } from "react-router";
 
 interface ISignInForm {
   email: string;
@@ -16,10 +17,15 @@ export const SignInForm = () => {
     clearErrors,
     setValue,
   } = useForm<ISignInForm>();
+
+  const navigate = useNavigate();
+
+  // TODO: create a loading state
   const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
     try {
       const result = await mockApi.login(data.email, data.password);
       localStorage.setItem("token", result.token);
+      navigate("/chat");
     } catch (error) {
       setValue("password", "");
       setError("form", {
