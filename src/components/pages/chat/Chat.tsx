@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { mockApi } from "@/api/mockApi";
 import { useToken } from "@/hooks/useToken";
 import type { Message } from "@/types";
+import { InputChat } from "@/components/common/InputChat/InputChat";
 
 export const Chat = () => {
   const { conversationId } = useParams();
@@ -24,7 +25,7 @@ export const Chat = () => {
   }, [token, conversationId]);
 
   return (
-    <div>
+    <div className="relative h-full">
       <ul className="flex flex-col space-y-4">
         {messages.map((message: Message) => {
           return (
@@ -41,6 +42,7 @@ export const Chat = () => {
           );
         })}
       </ul>
+      <InputChat />
     </div>
   );
 };
