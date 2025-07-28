@@ -1,37 +1,14 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { mockApi } from "@/api/mockApi";
-import { useToken } from "@/hooks/useToken";
 import type { Message } from "@/types";
 import { InputChat } from "@/components/common/InputChat/InputChat";
+import { useMessages } from "@/hooks/useMessages";
 
 export const Chat = () => {
   const { conversationId } = useParams();
-  const { token } = useToken(Number(conversationId));
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { messages, sendMessage } = useMessages(conversationId);
 
-  useEffect(() => {
-    const fetchConversation = async () => {
-      if (!token || !conversationId) return;
-      try {
-        const result = await mockApi.getMessages(token, conversationId);
-        setMessages(result.messages);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchConversation();
-  }, [token, conversationId]);
-
-  const sendMessage = async (message: string) => {
-    const result = await mockApi.sendMessage(token, conversationId, message);
-    const aiResult = await mockApi.simulateAIResponse(conversationId, message);
-    setMessages((prev: Message[]) => [
-      ...prev,
-      result.message,
-      aiResult.message,
-    ]);
+  const handleSendMessage = async (message: string) => {
+    sendMessage(message);
   };
 
   return (
@@ -52,7 +29,7 @@ export const Chat = () => {
           );
         })}
       </ul>
-      <InputChat sendFn={sendMessage} />
+      <InputChat sendFn={handleSendMessage} />
     </div>
   );
 };
