@@ -13,6 +13,7 @@ export interface IValueContext {
   error: boolean;
   conversations: Conversation[];
   createConversation: (conversation: Conversation) => void;
+  refetch: () => void;
 }
 
 export const ConversationContext = createContext<IValueContext | undefined>(
@@ -22,22 +23,23 @@ export const ConversationContext = createContext<IValueContext | undefined>(
 export const ConversationContextProvider = ({ children }: IProps) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(true);
   const { token } = useToken();
-
+  const fetchData = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      if (!token) return;
+      const result = await mockApi.getConversations(token);
+      setConversations(result.conversations);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setError(true);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) return;
-        const result = await mockApi.getConversations(token);
-        setConversations(result.conversations);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-        setLoading(false);
-      }
-    };
     fetchData();
   }, [token]);
 
@@ -50,6 +52,7 @@ export const ConversationContextProvider = ({ children }: IProps) => {
     error,
     conversations,
     createConversation,
+    refetch: fetchData,
   };
 
   return (
