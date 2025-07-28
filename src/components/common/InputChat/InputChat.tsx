@@ -3,9 +3,13 @@ import { Send } from "lucide-react";
 
 interface IProps {
   sendFn: (message: string) => void;
+  placeholder?: string;
 }
 
-export const InputChat = ({ sendFn }: IProps) => {
+export const InputChat = ({
+  sendFn,
+  placeholder = "Answer to ChatApp...",
+}: IProps) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const focusInputElement = () => {
@@ -21,7 +25,7 @@ export const InputChat = ({ sendFn }: IProps) => {
       >
         <textarea
           ref={inputRef}
-          placeholder="Answer to ChatApp..."
+          placeholder={placeholder}
           className="focus:outline-none w-full h-15"
           rows={2}
         ></textarea>

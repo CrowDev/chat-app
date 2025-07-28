@@ -26,7 +26,7 @@ const Dashboard = () => {
       ) : (
         <>
           <p className="text-3xl text-center mb-6">Hey! How's everything?</p>
-          <InputChat sendFn={send} />
+          <InputChat sendFn={send} placeholder={"How can I help you today?"} />
         </>
       )}
     </div>
