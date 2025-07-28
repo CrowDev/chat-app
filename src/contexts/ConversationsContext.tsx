@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { useEffect, useState } from "react";
 import { mockApi } from "@/api/mockApi";
 import { useToken } from "@/hooks/useToken";
+import { getConversations, storeConversation } from "@/storage/localStorage";
 
 interface IProps {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export const ConversationContext = createContext<IValueContext | undefined>(
 export const ConversationContextProvider = ({ children }: IProps) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const { token } = useToken();
   const fetchData = async () => {
     setLoading(true);
@@ -32,6 +33,7 @@ export const ConversationContextProvider = ({ children }: IProps) => {
       if (!token) return;
       const result = await mockApi.getConversations(token);
       setConversations(result.conversations);
+      storeConversation(result.conversations);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -39,11 +41,21 @@ export const ConversationContextProvider = ({ children }: IProps) => {
       setLoading(false);
     }
   };
+  const checkConversations = () => {
+    return getConversations();
+  };
   useEffect(() => {
-    fetchData();
+    const conversationsStored = checkConversations();
+    if (conversationsStored) {
+      setConversations(conversationsStored);
+      setLoading(false);
+    } else {
+      fetchData();
+    }
   }, [token]);
 
   const createConversation = (conversation: Conversation) => {
+    storeConversation([...conversations, conversation]);
     setConversations((prev: Conversation[]) => [conversation, ...prev]);
   };
 
