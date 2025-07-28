@@ -5,7 +5,9 @@ export const ChatPageLayout = () => {
   return (
     <div className="min-h-dvh bg-background text-light-font grid grid-cols-[200px_1fr]">
       <Sidebar />
-      <Outlet />
+      <div className="p-6 mx-auto max-w-3xl w-full">
+        <Outlet />
+      </div>
     </div>
   );
 };

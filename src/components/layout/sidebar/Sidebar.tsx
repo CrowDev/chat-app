@@ -31,12 +31,13 @@ export const Sidebar = () => {
         <ul className="flex flex-col space-y-1">
           {conversations.map((conversation: Conversation) => {
             return (
-              <li className="overflow-hidden rounded-lg hover:bg-slate-600 hover:cursor-pointer transition-colors p-1.5">
-                <p className="truncate text-sm">
-                  <Link to={`/chat/${conversation.id}`}>
-                    {conversation.title}
-                  </Link>
-                </p>
+              <li
+                key={conversation.id}
+                className="overflow-hidden rounded-lg hover:bg-slate-600 hover:cursor-pointer transition-colors p-1.5"
+              >
+                <Link to={`/chat/${conversation.id}`}>
+                  <p className="truncate text-sm">{conversation.title}</p>
+                </Link>
               </li>
             );
           })}

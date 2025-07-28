@@ -2,6 +2,7 @@ import App from "@/App";
 import { ProtectedRoute } from "@/components/common/ProtectedRoute/ProtectedRoute";
 import { ChatPageLayout } from "@/components/layout/chat/ChatPageLayout";
 import { AuthLayout } from "@/components/layout/login/AuthLayout";
+import { Chat } from "@/components/pages/chat/Chat";
 import ChatPage from "@/pages/Chat/Chat";
 import Login from "@/pages/Login/Login";
 import { Routes, Route } from "react-router";
@@ -18,6 +19,7 @@ export const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<ChatPageLayout />}>
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/chat/:conversationId" element={<Chat />} />
           </Route>
         </Route>
       </Routes>
