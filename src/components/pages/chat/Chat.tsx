@@ -28,34 +28,39 @@ export const Chat = () => {
   };
 
   return (
-    <div className="relative h-full grid grid-rows-[1fr_90px]">
-      <ul className="flex flex-col space-y-4">
-        {messages.map((message: Message) => {
-          return (
-            <li
-              key={message.id}
-              className={`flex ${message.is_from_ai ? "justify-start" : "justify-end"} `}
-            >
-              <div
-                className={`p-2 rounded-lg ${message.is_from_ai ? "" : "bg-slate-600"}`}
+    <div className="relative h-full">
+      <div className="h-[5vh]">Test</div>
+      <div className="relative h-[70vh] max-h-[70vh] overflow-y-scroll p-6 mb-[5vh]">
+        <ul className="flex flex-col space-y-4">
+          {messages.map((message: Message) => {
+            return (
+              <li
+                key={message.id}
+                className={`flex ${message.is_from_ai ? "justify-start" : "justify-end"} `}
               >
-                {message.content}
+                <div
+                  className={`p-2 rounded-lg ${message.is_from_ai ? "" : "bg-slate-600"}`}
+                >
+                  {message.content}
+                </div>
+              </li>
+            );
+          })}
+          {isTyping && (
+            <li className={`flex justify-start`}>
+              <div className="flex gap-0.5 bg-slate-600 rounded-lg p-2 w-fit">
+                <Dot className="animate-bounce" size={16} />
+                <Dot className="animate-bounce" size={16} />
+                <Dot className="animate-bounce" size={16} />
               </div>
             </li>
-          );
-        })}
-        {isTyping && (
-          <li className={`flex justify-start`}>
-            <div className="flex gap-0.5 bg-slate-600 rounded-lg p-2 w-fit">
-              <Dot className="animate-bounce" size={16} />
-              <Dot className="animate-bounce" size={16} />
-              <Dot className="animate-bounce" size={16} />
-            </div>
-          </li>
-        )}
-        {error && <ErrorSendMessage refetch={refetch} />}
-      </ul>
-      <InputChat sendFn={handleSendMessage} setMessage={setMessage} />
+          )}
+          {error && <ErrorSendMessage refetch={refetch} />}
+        </ul>
+      </div>
+      <div className="h-[15vh]">
+        <InputChat sendFn={handleSendMessage} setMessage={setMessage} />
+      </div>
     </div>
   );
 };
