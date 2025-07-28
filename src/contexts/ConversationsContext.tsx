@@ -31,10 +31,10 @@ export const ConversationContextProvider = ({ children }: IProps) => {
         if (!token) return;
         const result = await mockApi.getConversations(token);
         setConversations(result.conversations);
+        setLoading(false);
       } catch (error) {
         console.error(error);
         setError(true);
-      } finally {
         setLoading(false);
       }
     };
