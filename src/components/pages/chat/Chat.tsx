@@ -24,6 +24,16 @@ export const Chat = () => {
     fetchConversation();
   }, [token, conversationId]);
 
+  const sendMessage = async (message: string) => {
+    const result = await mockApi.sendMessage(token, conversationId, message);
+    const aiResult = await mockApi.simulateAIResponse(conversationId, message);
+    setMessages((prev: Message[]) => [
+      ...prev,
+      result.message,
+      aiResult.message,
+    ]);
+  };
+
   return (
     <div className="relative h-full">
       <ul className="flex flex-col space-y-4">
@@ -42,7 +52,7 @@ export const Chat = () => {
           );
         })}
       </ul>
-      <InputChat />
+      <InputChat sendFn={sendMessage} />
     </div>
   );
 };

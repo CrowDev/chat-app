@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import { Send } from "lucide-react";
 
-export const InputChat = () => {
+interface IProps {
+  sendFn: (message: string) => void;
+}
+
+export const InputChat = ({ sendFn }: IProps) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const focusInputElement = () => {
@@ -22,7 +26,10 @@ export const InputChat = () => {
           rows={2}
         ></textarea>
       </div>
-      <button>
+      <button
+        type="button"
+        onClick={() => sendFn(inputRef.current?.value as string)}
+      >
         <Send />
       </button>
     </div>
