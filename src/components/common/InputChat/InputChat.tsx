@@ -14,7 +14,7 @@ export const InputChat = ({ sendFn }: IProps) => {
   };
 
   return (
-    <div className="flex absolute bottom-0 w-full gap-5">
+    <div className={`flex w-full gap-5`}>
       <div
         className="rounded-lg bg-slate-600 p-3 hover:cursor-text grow"
         onClick={focusInputElement}

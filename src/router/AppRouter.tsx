@@ -1,9 +1,9 @@
 import App from "@/App";
 import { ProtectedRoute } from "@/components/common/ProtectedRoute/ProtectedRoute";
-import { ChatPageLayout } from "@/components/layout/chat/ChatPageLayout";
+import { DashboardLayout } from "@/components/layout/dashboard/DashboardLayout";
 import { AuthLayout } from "@/components/layout/login/AuthLayout";
 import { Chat } from "@/components/pages/chat/Chat";
-import ChatPage from "@/pages/Chat/Chat";
+import Dashboard from "@/pages/Dashboard/Dashboard";
 import Login from "@/pages/Login/Login";
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router";
@@ -17,8 +17,8 @@ export const AppRouter = () => {
           <Route path="/login" element={<Login />} />
         </Route>
         <Route element={<ProtectedRoute />}>
-          <Route element={<ChatPageLayout />}>
-            <Route path="/chat" element={<ChatPage />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/chat" element={<Dashboard />} />
             <Route path="/chat/:conversationId" element={<Chat />} />
           </Route>
         </Route>

@@ -1,32 +1,20 @@
-import { useEffect, useState } from "react";
-import { mockApi } from "@/api/mockApi";
 import type { Conversation } from "@/types";
 import { Link } from "react-router";
-
-const TOKEN_KEY = "token";
+import { CirclePlus } from "lucide-react";
+import { useConversationsContext } from "@/hooks/useConversationsContext";
 
 export const Sidebar = () => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-
-  useEffect(() => {
-    const fetchConversations = async () => {
-      const token = localStorage.getItem(TOKEN_KEY);
-      if (token) {
-        try {
-          const result = await mockApi.getConversations(token);
-          setConversations(result.conversations);
-        } catch (error) {
-          console.log("Failed to load conversations");
-        }
-      }
-    };
-    fetchConversations();
-  }, []);
+  const { conversations } = useConversationsContext();
 
   return (
     <div className="min-h-dvh border-r-slate-600 border-r p-4 flex flex-col space-y-4">
       <div>logo</div>
       <div className="flex flex-col space-y-4 mt-2">
+        <div>
+          <Link to="/chat" className="flex gap-2 items-center">
+            <CirclePlus size={20} /> <span>New chat</span>
+          </Link>
+        </div>
         <div className="text-xs">Chats</div>
         <ul className="flex flex-col space-y-1">
           {conversations.map((conversation: Conversation) => {

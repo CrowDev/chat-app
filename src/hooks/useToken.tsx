@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 const TOKEN_KEY = "token";
 
-export const useToken = (conversationId: number) => {
+export const useToken = (conversationId?: number) => {
   const [token, setToken] = useState<string | null>(null);
 
   const navigate = useNavigate();

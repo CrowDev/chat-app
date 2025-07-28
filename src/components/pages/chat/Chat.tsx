@@ -35,7 +35,7 @@ export const Chat = () => {
   };
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full grid grid-rows-[1fr_90px]">
       <ul className="flex flex-col space-y-4">
         {messages.map((message: Message) => {
           return (
