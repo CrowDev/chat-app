@@ -3,10 +3,11 @@ import { useToken } from "@/hooks/useToken";
 import { mockApi } from "@/api/mockApi";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
 import { useNavigate } from "react-router";
+import { Spinner } from "@/components/common/Spinner/Spinner";
 
 const Dashboard = () => {
   const { token } = useToken();
-  const { createConversation } = useConversationsContext();
+  const { createConversation, loading } = useConversationsContext();
   const navigate = useNavigate();
   const send = async (message: string) => {
     try {
@@ -20,8 +21,14 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-3xl mx-auto w-full p-6 pt-44 relative h-fit">
-      <p className="text-3xl text-center mb-6">Hey! How's everything?</p>
-      <InputChat sendFn={send} />
+      {loading ? (
+        <Spinner size={36} />
+      ) : (
+        <>
+          <p className="text-3xl text-center mb-6">Hey! How's everything?</p>
+          <InputChat sendFn={send} />
+        </>
+      )}
     </div>
   );
 };
