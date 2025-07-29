@@ -5,9 +5,15 @@ import { useSidebarContext } from "@/hooks/useSidebarContext";
 
 export const Dashboard = () => {
   const { isMinimized, isMobile } = useSidebarContext();
+  let gridCols = "";
+  if (!isMobile) {
+    gridCols = isMinimized
+      ? "grid md:grid-cols-[64px_1fr]"
+      : "grid md:grid-cols-[200px_1fr]";
+  }
   return (
     <div
-      className={`relative min-h-dvh bg-light-main-bg dark:bg-dark-main-bg text-light-primary-text dark:text-dark-primary-text md:grid md:grid-cols-[${isMinimized && !isMobile ? "64px" : "200px"}_1fr]`}
+      className={`relative min-h-dvh bg-light-main-bg dark:bg-dark-main-bg text-light-primary-text dark:text-dark-primary-text ${gridCols}`}
     >
       <Theme />
       <Sidebar />
