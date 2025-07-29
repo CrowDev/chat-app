@@ -10,19 +10,21 @@ import { BrowserRouter } from "react-router";
 
 export const AppRouter = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-        </Route>
-        <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="/chat" element={<Dashboard />} />
-            <Route path="/chat/:conversationId" element={<Chat />} />
+    <div className="font-lato">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route element={<ProtectedRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/chat" element={<Dashboard />} />
+              <Route path="/chat/:conversationId" element={<Chat />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };

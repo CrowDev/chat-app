@@ -1,11 +1,10 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap");
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-background: hsl(222.2 84% 4.9%);
-  --color-primary: hsl(262 83% 58%);
-  --color-light-font: hsl(210 40% 98%);
+  --font-lato: "Lato", sans-serif;
 
   --color-light-primary: #1e3a5f;
   --color-light-primary-hover: #2d5a87;
@@ -34,13 +33,6 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-
-/* input:-webkit-autofill, */
-/* input:-webkit-autofill:hover, */
-/* input:-webkit-autofill:focus, */
-/* input:-webkit-autofill:active { */
-/*   -webkit-box-shadow: 0 0 0 30px var(--color-bg-light-main-bg) inset !important; */
-/* } */
 
 :root {
   --autofill-bg: rgb(250 248 243);
