@@ -4,12 +4,13 @@ import { InputChat } from "@/components/common/InputChat/InputChat";
 import { useMessages } from "@/hooks/useMessages";
 import { Dot } from "lucide-react";
 import { ErrorSendMessage } from "@/components/common/Error/ErrorSendMessage";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
 import { Spinner } from "@/components/common/Spinner/Spinner";
 
 export const Chat = () => {
   const navigate = useNavigate();
+  const chatContainerRef = useRef<HTMLUListElement>(null);
   const [message, setMessage] = useState<string | null>(null);
   const { conversationId } = useParams();
   if (!conversationId) {
@@ -25,6 +26,13 @@ export const Chat = () => {
     conversationHandler,
     loading,
   } = useMessages(conversationId);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const { conversations } = useConversationsContext();
 
@@ -54,7 +62,10 @@ export const Chat = () => {
     <div className="relative h-full">
       <div className="h-[5vh] font-semibold">{conversationTitle()}</div>
       <div className="relative h-[70vh] max-h-[70vh] overflow-hidden mb-[5vh] bg-light-chat-bubble dark:bg-dark-chat-bubble rounded-xl border border-light-border dark:border-dark-border">
-        <ul className="flex flex-col space-y-4 h-full overflow-auto p-6">
+        <ul
+          className="flex flex-col space-y-4 h-full overflow-auto p-6"
+          ref={chatContainerRef}
+        >
           {messages.map((message: Message) => {
             return (
               <li
