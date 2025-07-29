@@ -1,13 +1,61 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-background: hsl(222.2 84% 4.9%);
   --color-primary: hsl(262 83% 58%);
   --color-light-font: hsl(210 40% 98%);
+
+  --color-light-primary: #1e3a5f;
+  --color-light-primary-hover: #2d5a87;
+
+  --color-light-main-bg: #faf8f3;
+  --color-light-chat-bubble: #fff;
+
+  --color-light-primary-text: #1a2332;
+  --color-light-secondary-text: #3e4c59;
+  --color-light-border: #e8e3d3;
+
+  --color-dark-primary: #1e3a5f;
+  --color-dark-primary-hover: #2d5a87;
+  --color-dark-accent: #c73e1d;
+
+  --color-dark-main-bg: #1a2332;
+  --color-dark-chat-bubble: #243041;
+
+  --color-dark-primary-text: #f7f4f0;
+  --color-dark-secondary-text: #e8e3d3;
+  --color-dark-border: #3e4c59;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+}
+
+/* input:-webkit-autofill, */
+/* input:-webkit-autofill:hover, */
+/* input:-webkit-autofill:focus, */
+/* input:-webkit-autofill:active { */
+/*   -webkit-box-shadow: 0 0 0 30px var(--color-bg-light-main-bg) inset !important; */
+/* } */
+
+:root {
+  --autofill-bg: rgb(250 248 243);
+  --autofill-text: var(--color-light-primary-text);
+}
+
+:where(.dark, .dark *) {
+  --autofill-bg: rgb(26 35 50);
+  --autofill-text: var(--color-dark-primary-text);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--autofill-bg) inset !important;
+  -webkit-text-fill-color: var(--autofill-text);
 }
