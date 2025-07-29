@@ -1,6 +1,6 @@
 import App from "@/App";
 import { ProtectedRoute } from "@/components/common/ProtectedRoute/ProtectedRoute";
-import { DashboardLayout } from "@/components/layout/dashboard/DashboardLayout";
+import { DashboardLayout } from "@/components/layout/dashboard/Layout";
 import { AuthLayout } from "@/components/layout/login/AuthLayout";
 import { Chat } from "@/components/pages/chat/Chat";
 import Dashboard from "@/pages/Dashboard/Dashboard";
