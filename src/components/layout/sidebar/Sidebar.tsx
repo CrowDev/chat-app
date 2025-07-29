@@ -7,11 +7,6 @@ import { SidebarListConversation } from "@/components/ui/sidebar/SidebarListConv
 export const Sidebar = () => {
   const { conversations, loading, refetch, error } = useConversationsContext();
 
-  const handleChangeTheme = () => {
-    const htmlElement = document.documentElement;
-    htmlElement.classList.toggle("dark");
-  };
-
   return (
     <div className="min-h-dvh border-r-light-border dark:border-r-dark-border border-r p-4 flex flex-col space-y-4">
       <div>logo</div>
@@ -45,9 +40,6 @@ export const Sidebar = () => {
         ) : (
           <SidebarListConversation conversations={conversations} />
         )}
-      </div>
-      <div>
-        <button onClick={handleChangeTheme}>change theme</button>
       </div>
     </div>
   );
