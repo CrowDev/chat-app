@@ -5,7 +5,7 @@ export const Theme = () => {
     htmlElement.classList.toggle("dark");
   };
   return (
-    <div className="absolute top-5 right-5 text-light-primary-text dark:text-dark-primary-text">
+    <div className="z-50 absolute top-5 right-5 text-light-primary-text dark:text-dark-primary-text">
       <button
         type="button"
         className="p-1.5 rounded-full hover:cursor-pointer hover:scale-120 transition-transform"
