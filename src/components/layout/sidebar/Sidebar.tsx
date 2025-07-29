@@ -7,12 +7,20 @@ import { SidebarListConversation } from "@/components/ui/sidebar/SidebarListConv
 export const Sidebar = () => {
   const { conversations, loading, refetch, error } = useConversationsContext();
 
+  const handleChangeTheme = () => {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.toggle("dark");
+  };
+
   return (
-    <div className="min-h-dvh border-r-slate-600 border-r p-4 flex flex-col space-y-4">
+    <div className="min-h-dvh border-r-light-border dark:border-r-dark-border border-r p-4 flex flex-col space-y-4">
       <div>logo</div>
       <div className="flex flex-col space-y-4 mt-2">
         <div>
-          <Link to="/chat" className="flex gap-2 items-center">
+          <Link
+            to="/chat"
+            className="flex gap-2 p-1.5 items-center rounded-lg hover:bg-dark-accent hover:text-dark-primary-text transition-colors"
+          >
             <CirclePlus size={20} /> <span>New chat</span>
           </Link>
         </div>
@@ -37,6 +45,9 @@ export const Sidebar = () => {
         ) : (
           <SidebarListConversation conversations={conversations} />
         )}
+      </div>
+      <div>
+        <button onClick={handleChangeTheme}>change theme</button>
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ export const SignInForm = () => {
             id="email"
             type="email"
             placeholder="Enter your email"
-            className="py-2 px-3 rounded-lg border-slate-600 border focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-offset-primary"
+            className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
             {...register("email", { required: true })}
             onChange={clearError}
           />
@@ -60,7 +60,7 @@ export const SignInForm = () => {
             id="password"
             type="password"
             placeholder="Enter your password"
-            className="py-2 px-3 rounded-lg border-slate-600 border focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-offset-primary"
+            className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
             {...register("password", { required: true })}
             onChange={clearError}
           />
@@ -72,7 +72,7 @@ export const SignInForm = () => {
         <div>
           <button
             type="submit"
-            className="rounded-lg hover:cursor-pointer bg-primary hover:bg-primary/90 disabled:bg-primary/50 disabled:hover:cursor-default w-full py-2 px-4"
+            className="transition-all duration-500 hover:scale-105 rounded-lg hover:cursor-pointer text-dark-primary-text bg-dark-accent hover:bg-dark-accent/90 disabled:bg-dark-accent/50 disabled:hover:cursor-default w-full py-2 px-4"
           >
             Sign In
           </button>

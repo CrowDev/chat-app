@@ -7,7 +7,7 @@ interface IProps {
 
 export const SidebarConversation = ({ conversation }: IProps) => {
   return (
-    <li className="overflow-hidden rounded-lg hover:bg-slate-600 hover:cursor-pointer transition-colors p-1.5">
+    <li className="overflow-hidden rounded-lg hover:bg-light-primary hover:text-dark-primary-text hover:cursor-pointer transition-colors p-1.5">
       <Link to={`/chat/${conversation.id}`}>
         <p className="truncate text-sm">{conversation.title}</p>
       </Link>

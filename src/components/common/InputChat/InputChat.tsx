@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Send } from "lucide-react";
+import { SendHorizonal } from "lucide-react";
 
 interface IProps {
   sendFn: () => void;
@@ -28,21 +28,25 @@ export const InputChat = ({
 
   // TODO: add a debounce for input
   return (
-    <div className={`flex w-full gap-5`}>
+    <div className="flex gap-5 items-center">
       <div
-        className="rounded-lg bg-slate-600 p-3 hover:cursor-text grow"
+        className="flex justify-start items-center hover:cursor-text grow rounded-full bg p-3 border-light-border dark:border-dark-border border-2"
         onClick={focusInputElement}
       >
         <textarea
           ref={inputRef}
           placeholder={placeholder}
-          className="focus:outline-none w-full h-15"
+          className="focus:outline-offset-[16px] focus:outline-2 outline-light-primary-hover rounded-full w-full h-10 p-0.5"
           rows={2}
           onChange={() => setMessage(inputRef.current?.value as string)}
         ></textarea>
       </div>
-      <button type="button" onClick={handleClick}>
-        <Send />
+      <button
+        className="grid place-content-center rounded-full p-2 bg-light-primary text-dark-primary-text w-[48px] h-[48px] hover:cursor-pointer hover:scale-110 transition-transform"
+        type="button"
+        onClick={handleClick}
+      >
+        <SendHorizonal size={24} />
       </button>
     </div>
   );

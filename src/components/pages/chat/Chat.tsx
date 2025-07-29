@@ -30,7 +30,7 @@ export const Chat = () => {
   return (
     <div className="relative h-full">
       <div className="h-[5vh]">Test</div>
-      <div className="relative h-[70vh] max-h-[70vh] overflow-y-scroll p-6 mb-[5vh]">
+      <div className="relative h-[70vh] max-h-[70vh] overflow-y-scroll p-6 mb-[5vh] bg-light-chat-bubble dark:bg-dark-chat-bubble rounded-xl border border-light-border dark:border-dark-border">
         <ul className="flex flex-col space-y-4">
           {messages.map((message: Message) => {
             return (
@@ -39,7 +39,7 @@ export const Chat = () => {
                 className={`flex ${message.is_from_ai ? "justify-start" : "justify-end"} `}
               >
                 <div
-                  className={`p-2 rounded-lg ${message.is_from_ai ? "" : "bg-slate-600"}`}
+                  className={`p-2 rounded-lg max-w-[70%] ${message.is_from_ai ? "bg-light-border text-light-primary-text dark:bg-dark-border dark:text-dark-secondary-text" : "bg-light-primary text-dark-primary-text"}`}
                 >
                   {message.content}
                 </div>
@@ -48,7 +48,7 @@ export const Chat = () => {
           })}
           {isTyping && (
             <li className={`flex justify-start`}>
-              <div className="flex gap-0.5 bg-slate-600 rounded-lg p-2 w-fit">
+              <div className="flex gap-0.5 bg-light-border text-light-primary-text dark:bg-dark-border dark:text-dark-secondary-text rounded-lg p-2 w-fit">
                 <Dot className="animate-bounce" size={16} />
                 <Dot className="animate-bounce" size={16} />
                 <Dot className="animate-bounce" size={16} />
