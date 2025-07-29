@@ -32,7 +32,7 @@ export const Theme = () => {
     <div className="z-50 absolute top-5 right-5 text-light-primary-text dark:text-dark-primary-text">
       <button
         type="button"
-        className="p-1.5 rounded-full hover:cursor-pointer hover:scale-120 transition-transform"
+        className="p-1.5 rounded-full hover:cursor-pointer hover:scale-120 transition-transform hover:text-dark-accent"
         onClick={handleChangeTheme}
       >
         <SunMoon size={24} />

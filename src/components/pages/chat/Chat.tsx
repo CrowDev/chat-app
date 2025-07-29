@@ -60,7 +60,9 @@ export const Chat = () => {
 
   return (
     <div className="relative h-full">
-      <div className="h-[5vh] font-semibold">{conversationTitle()}</div>
+      <div className="h-[5vh] font-semibold w-fit max-w-[50%] mx-auto">
+        {conversationTitle()}
+      </div>
       <div className="relative h-[70vh] max-h-[70vh] overflow-hidden mb-[5vh] bg-light-chat-bubble dark:bg-dark-chat-bubble rounded-xl border border-light-border dark:border-dark-border">
         <ul
           className="flex flex-col space-y-4 h-full overflow-auto p-6"
