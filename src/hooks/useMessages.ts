@@ -42,6 +42,7 @@ export const useMessages = (conversationId: string) => {
     const messagesStore = checkMessages();
     if (messagesStore) {
       setMessages(messagesStore);
+      setLoading(false);
     } else {
       fetchConversation();
     }
