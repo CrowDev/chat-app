@@ -27,7 +27,7 @@ export const InputChat = ({
 
   useEffect(() => {
     if (!debouncedValue) return;
-    setMessage(inputRef.current?.value as string);
+    setMessage(debouncedValue);
   }, [debouncedValue]);
 
   const focusInputElement = () => {
@@ -40,7 +40,7 @@ export const InputChat = ({
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-    setTextareaValue("");
+    setTextareaValue(inputRef.current?.value || "");
   };
 
   return (

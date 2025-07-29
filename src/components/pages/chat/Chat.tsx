@@ -17,15 +17,8 @@ export const Chat = () => {
     navigate("/chat");
     return;
   }
-  const {
-    messages,
-    sendMessage,
-    isTyping,
-    error,
-    retrySend,
-    conversationHandler,
-    loading,
-  } = useMessages(conversationId);
+  const { messages, sendMessage, isTyping, error, loading } =
+    useMessages(conversationId);
 
   const { conversations } = useConversationsContext();
 
@@ -56,14 +49,6 @@ export const Chat = () => {
   const handleSendMessage = async () => {
     if (message) {
       sendMessage(message);
-    }
-  };
-
-  const refetch = () => {
-    if (message) {
-      retrySend(message);
-    } else {
-      conversationHandler();
     }
   };
 
@@ -100,7 +85,7 @@ export const Chat = () => {
               </div>
             </li>
           )}
-          {error && <ErrorSendMessage refetch={refetch} />}
+          {error && <ErrorSendMessage />}
           {loading && (
             <div className="w-fit mx-auto">
               <Spinner size={24} />

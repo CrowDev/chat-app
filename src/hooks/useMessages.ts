@@ -96,7 +96,5 @@ export const useMessages = (conversationId: string) => {
     isTyping,
     error,
     loading,
-    retrySend: sendMessage,
-    conversationHandler,
   };
 };
