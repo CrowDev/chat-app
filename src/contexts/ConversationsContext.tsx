@@ -3,7 +3,11 @@ import { createContext } from "react";
 import { useEffect, useState } from "react";
 import { mockApi } from "@/api/mockApi";
 import { useToken } from "@/hooks/useToken";
-import { getConversations, storeConversation } from "@/storage/localStorage";
+import {
+  getConversations,
+  storeConversation,
+  getUserIdFromToken,
+} from "@/storage/localStorage";
 
 interface IProps {
   children: React.ReactNode;
@@ -32,8 +36,12 @@ export const ConversationContextProvider = ({ children }: IProps) => {
     try {
       if (!token) return;
       const result = await mockApi.getConversations(token);
-      setConversations(result.conversations);
-      storeConversation(result.conversations);
+      const userId = getUserIdFromToken(token);
+      const filteredConversations = result.conversations.filter(
+        (conversation: Conversation) => conversation.user_id === userId,
+      );
+      setConversations(filteredConversations);
+      storeConversation(filteredConversations);
       setLoading(false);
     } catch (error) {
       console.error(error);
