@@ -5,6 +5,7 @@ import { useMessages } from "@/hooks/useMessages";
 import { Dot } from "lucide-react";
 import { ErrorSendMessage } from "@/components/common/Error/ErrorSendMessage";
 import { useState } from "react";
+import { useConversationsContext } from "@/hooks/useConversationsContext";
 
 export const Chat = () => {
   const navigate = useNavigate();
@@ -17,6 +18,16 @@ export const Chat = () => {
   const { messages, sendMessage, isTyping, error, retrySend } =
     useMessages(conversationId);
 
+  const { conversations } = useConversationsContext();
+
+  const conversationTitle = () => {
+    const conversation = conversations.find(
+      (conversation) => conversation.id === Number(conversationId),
+    );
+    if (!conversation) return "Title not found";
+    return conversation.title;
+  };
+
   const handleSendMessage = async () => {
     if (message) {
       sendMessage(message);
@@ -27,9 +38,10 @@ export const Chat = () => {
     if (message) retrySend(message);
   };
 
+  // TODO: create a conversation with title
   return (
     <div className="relative h-full">
-      <div className="h-[5vh]">Test</div>
+      <div className="h-[5vh] font-semibold">{conversationTitle()}</div>
       <div className="relative h-[70vh] max-h-[70vh] overflow-hidden mb-[5vh] bg-light-chat-bubble dark:bg-dark-chat-bubble rounded-xl border border-light-border dark:border-dark-border">
         <ul className="flex flex-col space-y-4 h-full overflow-auto p-6">
           {messages.map((message: Message) => {
