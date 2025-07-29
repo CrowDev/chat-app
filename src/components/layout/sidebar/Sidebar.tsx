@@ -1,16 +1,18 @@
 import { Link } from "react-router";
-import { CirclePlus, RotateCcw, TriangleAlert } from "lucide-react";
+import { CirclePlus, LogOut, RotateCcw, TriangleAlert } from "lucide-react";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
 import { LoadingSidebar } from "@/components/ui/loading/LoadingSidebar";
 import { SidebarListConversation } from "@/components/ui/sidebar/SidebarListConversation";
+import { useLogout } from "@/hooks/useLogout";
 
 export const Sidebar = () => {
   const { conversations, loading, refetch, error } = useConversationsContext();
+  const { logout } = useLogout();
 
   return (
     <div className="min-h-dvh border-r-light-border dark:border-r-dark-border border-r p-4 flex flex-col space-y-4">
       <div>logo</div>
-      <div className="flex flex-col space-y-4 mt-2">
+      <div className="flex flex-col space-y-4 mt-2 grow">
         <div>
           <Link
             to="/chat"
@@ -41,6 +43,13 @@ export const Sidebar = () => {
           <SidebarListConversation conversations={conversations} />
         )}
       </div>
+      <button
+        type="button"
+        className="text-light-primary-text font-medium hover:cursor-pointer hover:text-dark-accent transition-colors dark:text-dark-primary-text flex gap-3 items-center"
+        onClick={logout}
+      >
+        <span>Log out</span> <LogOut size={16} />
+      </button>
     </div>
   );
 };
