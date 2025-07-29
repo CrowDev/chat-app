@@ -1,6 +1,8 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { mockApi } from "@/api/mockApi";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import { Spinner } from "@/components/common/Spinner/Spinner";
 
 interface ISignInForm {
   email: string;
@@ -12,7 +14,7 @@ export const SignInForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
     setError,
     clearErrors,
     setValue,
@@ -20,7 +22,6 @@ export const SignInForm = () => {
 
   const navigate = useNavigate();
 
-  // TODO: create a loading state
   const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
     try {
       const result = await mockApi.login(data.email, data.password);
@@ -36,6 +37,7 @@ export const SignInForm = () => {
   };
 
   const clearError = () => clearErrors("form");
+  const isDisabled = isSubmitting && !isValid;
 
   return (
     <div>
@@ -73,8 +75,9 @@ export const SignInForm = () => {
           <button
             type="submit"
             className="transition-all duration-500 hover:scale-105 rounded-lg hover:cursor-pointer text-dark-primary-text bg-dark-accent hover:bg-dark-accent/90 disabled:bg-dark-accent/50 disabled:hover:cursor-default w-full py-2 px-4"
+            disabled={isDisabled}
           >
-            Sign In
+            {isSubmitting ? <Spinner /> : "Sign In"}
           </button>
         </div>
       </form>
