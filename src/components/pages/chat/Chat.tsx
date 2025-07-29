@@ -27,6 +27,8 @@ export const Chat = () => {
     loading,
   } = useMessages(conversationId);
 
+  const { conversations } = useConversationsContext();
+
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -34,7 +36,14 @@ export const Chat = () => {
     }
   }, [messages]);
 
-  const { conversations } = useConversationsContext();
+  useEffect(() => {
+    const conversation = conversations.find(
+      (conversation) => conversation.id === Number(conversationId),
+    );
+    if (!conversation) {
+      navigate("/chat");
+    }
+  }, [conversations]);
 
   const conversationTitle = () => {
     const conversation = conversations.find(
