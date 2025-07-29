@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToken } from "./useToken";
 import { mockApi } from "@/api/mockApi";
 import type { Conversation, Message } from "@/types";
@@ -17,9 +17,10 @@ export const useMessages = (conversationId: string) => {
     return getMessages(conversationId);
   };
 
-  // TODO: check first error at retrieving messages or sending message
   const conversationHandler = () => {
     const fetchConversation = async () => {
+      setLoading(true);
+      setError(false);
       if (!token || !conversationId) return;
       try {
         const result = await mockApi.getMessages(token, conversationId);
@@ -96,5 +97,6 @@ export const useMessages = (conversationId: string) => {
     error,
     loading,
     retrySend: sendMessage,
+    conversationHandler,
   };
 };

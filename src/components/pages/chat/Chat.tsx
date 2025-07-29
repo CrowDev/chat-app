@@ -6,6 +6,7 @@ import { Dot } from "lucide-react";
 import { ErrorSendMessage } from "@/components/common/Error/ErrorSendMessage";
 import { useState } from "react";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
+import { Spinner } from "@/components/common/Spinner/Spinner";
 
 export const Chat = () => {
   const navigate = useNavigate();
@@ -15,8 +16,15 @@ export const Chat = () => {
     navigate("/chat");
     return;
   }
-  const { messages, sendMessage, isTyping, error, retrySend } =
-    useMessages(conversationId);
+  const {
+    messages,
+    sendMessage,
+    isTyping,
+    error,
+    retrySend,
+    conversationHandler,
+    loading,
+  } = useMessages(conversationId);
 
   const { conversations } = useConversationsContext();
 
@@ -35,7 +43,11 @@ export const Chat = () => {
   };
 
   const refetch = () => {
-    if (message) retrySend(message);
+    if (message) {
+      retrySend(message);
+    } else {
+      conversationHandler();
+    }
   };
 
   return (
@@ -67,6 +79,11 @@ export const Chat = () => {
             </li>
           )}
           {error && <ErrorSendMessage refetch={refetch} />}
+          {loading && (
+            <div className="w-fit mx-auto">
+              <Spinner size={24} />
+            </div>
+          )}
         </ul>
       </div>
       <div className="h-[15vh]">

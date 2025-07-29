@@ -19,7 +19,7 @@ export const InputChat = ({
   useEffect(() => {
     const timeoutHandler = setTimeout(() => {
       setDebouncedValue(textareaValue);
-    }, 500);
+    }, 200);
     return () => {
       clearTimeout(timeoutHandler);
     };
@@ -51,15 +51,16 @@ export const InputChat = ({
         <textarea
           ref={inputRef}
           placeholder={placeholder}
-          className="focus:outline-offset-[16px] focus:outline-2 outline-light-primary-hover rounded-full w-full h-10 p-0.5"
+          className="focus:outline-offset-[16px] focus:outline-2 outline-dark-accent rounded-full w-full h-10 p-0.5"
           rows={2}
           onChange={() => setTextareaValue(inputRef.current?.value as string)}
         ></textarea>
       </div>
       <button
-        className="grid place-content-center rounded-full p-2 bg-light-primary text-dark-primary-text w-[48px] h-[48px] hover:cursor-pointer hover:scale-110 transition-transform"
+        className="grid place-content-center rounded-full p-2 bg-dark-accent text-dark-primary-text w-[48px] h-[48px] hover:cursor-pointer hover:scale-110 transition-all disabled:bg-dark-accent/15 disabled:hover:cursor-not-allowed"
         type="button"
         onClick={handleClick}
+        disabled={!debouncedValue}
       >
         <SendHorizonal size={24} />
       </button>
