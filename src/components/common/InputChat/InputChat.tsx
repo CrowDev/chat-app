@@ -36,10 +36,11 @@ export const InputChat = ({
   };
 
   const handleClick = () => {
+    sendFn();
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-    sendFn();
+    setTextareaValue("");
   };
 
   return (
