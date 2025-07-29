@@ -6,6 +6,7 @@ interface IProps {
   conversation: Conversation;
 }
 
+//TODO: mark as active the current conversation
 export const SidebarConversation = ({ conversation }: IProps) => {
   const { isMobile, toggleSidebar } = useSidebarContext();
   const handleClick = () => {
