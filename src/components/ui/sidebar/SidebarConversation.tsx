@@ -1,12 +1,11 @@
 import { useSidebarContext } from "@/hooks/useSidebarContext";
 import type { Conversation } from "@/types";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 
 interface IProps {
   conversation: Conversation;
 }
 
-//TODO: mark as active the current conversation
 export const SidebarConversation = ({ conversation }: IProps) => {
   const { isMobile, toggleSidebar } = useSidebarContext();
   const handleClick = () => {
@@ -15,10 +14,14 @@ export const SidebarConversation = ({ conversation }: IProps) => {
     }
   };
   return (
-    <li className="overflow-hidden rounded-lg hover:bg-dark-accent hover:text-dark-primary-text hover:cursor-pointer transition-colors p-1.5">
-      <Link to={`/chat/${conversation.id}`} onClick={handleClick}>
-        <p className="truncate text-sm">{conversation.title}</p>
-      </Link>
-    </li>
+    <NavLink to={`/chat/${conversation.id}`} onClick={handleClick}>
+      {({ isActive }) => (
+        <li
+          className={`overflow-hidden rounded-lg hover:bg-dark-accent hover:text-dark-primary-text hover:cursor-pointer transition-colors p-1.5 ${isActive ? "bg-dark-accent text-dark-primary-text" : ""}`}
+        >
+          <p className="truncate text-sm">{conversation.title}</p>
+        </li>
+      )}
+    </NavLink>
   );
 };
