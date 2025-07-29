@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SendHorizonal } from "lucide-react";
 
 interface IProps {
@@ -12,7 +12,23 @@ export const InputChat = ({
   placeholder = "Answer to ChatApp...",
   setMessage,
 }: IProps) => {
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+  const [textareaValue, setTextareaValue] = useState<string>("");
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    const timeoutHandler = setTimeout(() => {
+      setDebouncedValue(textareaValue);
+    }, 500);
+    return () => {
+      clearTimeout(timeoutHandler);
+    };
+  }, [textareaValue]);
+
+  useEffect(() => {
+    if (!debouncedValue) return;
+    setMessage(inputRef.current?.value as string);
+  }, [debouncedValue]);
 
   const focusInputElement = () => {
     if (!inputRef.current) return;
@@ -26,7 +42,6 @@ export const InputChat = ({
     sendFn();
   };
 
-  // TODO: add a debounce for input
   return (
     <div className="flex gap-5 items-center">
       <div
@@ -38,7 +53,7 @@ export const InputChat = ({
           placeholder={placeholder}
           className="focus:outline-offset-[16px] focus:outline-2 outline-light-primary-hover rounded-full w-full h-10 p-0.5"
           rows={2}
-          onChange={() => setMessage(inputRef.current?.value as string)}
+          onChange={() => setTextareaValue(inputRef.current?.value as string)}
         ></textarea>
       </div>
       <button

@@ -38,7 +38,6 @@ export const Chat = () => {
     if (message) retrySend(message);
   };
 
-  // TODO: create a conversation with title
   return (
     <div className="relative h-full">
       <div className="h-[5vh] font-semibold">{conversationTitle()}</div>
