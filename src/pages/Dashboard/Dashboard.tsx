@@ -17,6 +17,7 @@ const Dashboard = () => {
   const send = async () => {
     setLoading(true);
     try {
+      if (!token || !message) return;
       const result = await mockApi.createConversation(token, message);
       createConversation(result.conversation);
       navigate(`/chat/${result.conversation.id}`);

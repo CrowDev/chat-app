@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useToken } from "./useToken";
-import { mockApi } from "@/api/mockApi";
-import type { Conversation, Message } from "@/types";
+import { mockApi, type Conversation, type Message } from "@/api/mockApi";
 import { useConversationsContext } from "./useConversationsContext";
 import { getMessages, storeMessages } from "@/storage/localStorage";
 
@@ -69,6 +68,7 @@ export const useMessages = (conversationId: string) => {
   const sendMessage = async (message: string) => {
     setError(false);
     try {
+      if (!token) return;
       const userMsg = await mockApi.sendMessage(token, conversationId, message);
       setMessages((prev) => [...prev, userMsg.message]);
 

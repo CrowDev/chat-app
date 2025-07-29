@@ -1,7 +1,10 @@
-import type { Conversation } from "@/types";
 import { createContext } from "react";
 import { useEffect, useState } from "react";
-import { mockApi } from "@/api/mockApi";
+import {
+  mockApi,
+  type Conversation,
+  type ConversationsResponse,
+} from "@/api/mockApi";
 import { useToken } from "@/hooks/useToken";
 import {
   getConversations,
@@ -35,7 +38,8 @@ export const ConversationContextProvider = ({ children }: IProps) => {
     setError(false);
     try {
       if (!token) return;
-      const result = await mockApi.getConversations(token);
+      const result: ConversationsResponse =
+        await mockApi.getConversations(token);
       const userId = getUserIdFromToken(token);
       const filteredConversations = result.conversations.filter(
         (conversation: Conversation) => conversation.user_id === userId,

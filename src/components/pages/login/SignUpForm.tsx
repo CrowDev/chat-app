@@ -22,7 +22,11 @@ export const SignUpForm = () => {
 
   const onSubmit: SubmitHandler<ISignUpForm> = async (data) => {
     try {
-      const result = await mockApi.register(data.email, data.password);
+      const result = await mockApi.register(
+        data.email,
+        data.password,
+        data.fullname,
+      );
       localStorage.setItem("token", result.token);
       navigate("/chat");
     } catch (error) {

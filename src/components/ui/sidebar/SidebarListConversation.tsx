@@ -1,4 +1,4 @@
-import type { Conversation } from "@/types";
+import type { Conversation } from "@/api/mockApi";
 import { SidebarConversation } from "./SidebarConversation";
 
 interface IProps {

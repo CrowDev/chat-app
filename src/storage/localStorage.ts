@@ -1,4 +1,4 @@
-import type { Conversation, Message } from "@/types";
+import type { Conversation, Message } from "@/api/mockApi";
 
 const TOKEN_KEY = "token";
 // Conversation Storage //

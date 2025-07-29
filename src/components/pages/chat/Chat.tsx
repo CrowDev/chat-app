@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router";
-import type { Message } from "@/types";
 import { InputChat } from "@/components/common/InputChat/InputChat";
 import { useMessages } from "@/hooks/useMessages";
 import { Dot } from "lucide-react";
@@ -7,6 +6,7 @@ import { ErrorSendMessage } from "@/components/common/Error/ErrorSendMessage";
 import { useEffect, useRef, useState } from "react";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
 import { Spinner } from "@/components/common/Spinner/Spinner";
+import type { Message } from "@/api/mockApi";
 
 export const Chat = () => {
   const navigate = useNavigate();
