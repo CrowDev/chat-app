@@ -2,6 +2,9 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { mockApi } from "@/api/mockApi";
 import { useNavigate } from "react-router";
 import { Spinner } from "@/components/common/Spinner/Spinner";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
+import { useEffect, useRef, useState } from "react";
 
 interface ISignUpForm {
   fullname: string;
@@ -11,16 +14,52 @@ interface ISignUpForm {
   form: string;
 }
 
+const signUpSchema = z
+  .object({
+    fullname: z
+      .string()
+      .min(1, "Full Name is required")
+      .min(3, "Full Name must be at least 3 characters"),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email("Invalid email address"),
+    password: z
+      .string()
+      .min(1, "Password is required")
+      .min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords does not match",
+    path: ["confirmPassword"],
+  });
+
+type SignUpForm = z.infer<typeof signUpSchema>;
+
 export const SignUpForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
-    setError,
-  } = useForm<ISignUpForm>();
+    formState: { errors, isSubmitting },
+    watch,
+  } = useForm<SignUpForm>({
+    resolver: zodResolver(signUpSchema),
+  });
+
+  const [formError, setFormError] = useState<string | null>(null);
+  const emailValue = watch("email");
+  const previousEmailValue = useRef<string | null>(null);
+  useEffect(() => {
+    if (formError && previousEmailValue.current !== emailValue) {
+      setFormError(null);
+    }
+    previousEmailValue.current = emailValue;
+  }, [emailValue, formError]);
+
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<ISignUpForm> = async (data) => {
+  const onSubmit = async (data: SignUpForm) => {
     try {
       const result = await mockApi.register(
         data.email,
@@ -30,13 +69,10 @@ export const SignUpForm = () => {
       localStorage.setItem("token", result.token);
       navigate("/chat");
     } catch (error) {
-      setError("form", {
-        type: "custom",
-        message: "An error has occurred, Pleasy, retry later.",
-      });
+      if (!(error instanceof Error)) return;
+      setFormError(error.message);
     }
   };
-  const isDisabled = isSubmitting && !isValid;
 
   return (
     <div>
@@ -47,10 +83,10 @@ export const SignUpForm = () => {
             id="fullname"
             placeholder="Enter your full name"
             className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
-            {...register("fullname", { required: true })}
+            {...register("fullname")}
           />
           {errors.fullname && (
-            <span className="text-red-500">This field is required</span>
+            <span className="text-red-500">{errors.fullname.message}</span>
           )}
         </div>
         <div className="flex flex-col space-y-2">
@@ -60,10 +96,10 @@ export const SignUpForm = () => {
             type="email"
             placeholder="Enter your email"
             className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
-            {...register("email", { required: true })}
+            {...register("email")}
           />
           {errors.email && (
-            <span className="text-red-500">This field is required</span>
+            <span className="text-red-500">{errors.email.message}</span>
           )}
         </div>
         <div className="flex flex-col space-y-2">
@@ -73,20 +109,7 @@ export const SignUpForm = () => {
             type="password"
             placeholder="Enter your password"
             className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
-            {...register("password", {
-              required: true,
-              minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters",
-              },
-              validate: {
-                checkPasswords: (password, { confirmPassword }) => {
-                  return (
-                    confirmPassword === password || "Passwords do not match"
-                  );
-                },
-              },
-            })}
+            {...register("password")}
           />
           {errors.password && (
             <span className="text-red-500">{errors.password.message}</span>
@@ -99,16 +122,7 @@ export const SignUpForm = () => {
             type="password"
             placeholder="Confirm your password"
             className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
-            {...register("confirmPassword", {
-              required: true,
-              validate: {
-                checkPasswords: (confirmPassword, { password }) => {
-                  return (
-                    confirmPassword === password || "Passwords do not match"
-                  );
-                },
-              },
-            })}
+            {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
             <span className="text-red-500">
@@ -116,12 +130,12 @@ export const SignUpForm = () => {
             </span>
           )}
         </div>
-        {errors.form && <p className="text-red-500">{errors.form.message}</p>}
+        {formError && <p className="text-red-500">{formError}</p>}
         <div>
           <button
             type="submit"
             className="transition-all duration-500 hover:scale-105 rounded-lg hover:cursor-pointer text-dark-primary-text bg-dark-accent hover:bg-dark-accent/90 disabled:bg-dark-accent/50 disabled:hover:cursor-default w-full py-2 px-4"
-            disabled={isDisabled}
+            disabled={isSubmitting}
           >
             {isSubmitting ? <Spinner /> : "Create Account"}
           </button>

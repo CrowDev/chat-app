@@ -2,41 +2,55 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { mockApi } from "@/api/mockApi";
 import { useNavigate } from "react-router";
 import { Spinner } from "@/components/common/Spinner/Spinner";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
 
-interface ISignInForm {
-  email: string;
-  password: string;
-  form: string;
-}
+const loginSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 export const SignInForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
-    setError,
-    clearErrors,
-    setValue,
-  } = useForm<ISignInForm>();
+    formState: { errors, isSubmitting },
+    watch,
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+  });
 
+  const [formError, setFormError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const previousValues = useRef<string | null>(null);
 
-  const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
+  const formValues = watch();
+
+  useEffect(() => {
+    const strFormValues = JSON.stringify(formValues);
+    if (formError && previousValues.current !== strFormValues) {
+      setFormError(null);
+    }
+    previousValues.current = strFormValues;
+  }, [formValues, formError]);
+
+  const onSubmit = async (data: LoginForm) => {
     try {
       const result = await mockApi.login(data.email, data.password);
       localStorage.setItem("token", result.token);
       navigate("/chat");
     } catch (error) {
-      setValue("password", "");
-      setError("form", {
-        type: "custom",
-        message: "Invalid credentials",
-      });
+      if (!(error instanceof Error)) return;
+      setFormError(error.message);
     }
   };
-
-  const clearError = () => clearErrors("form");
-  const isDisabled = isSubmitting && !isValid;
 
   return (
     <div>
@@ -48,11 +62,10 @@ export const SignInForm = () => {
             type="email"
             placeholder="Enter your email"
             className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
-            {...register("email", { required: true })}
-            onChange={clearError}
+            {...register("email")}
           />
           {errors.email && (
-            <span className="text-red-500">This field is required</span>
+            <span className="text-red-500">{errors.email.message}</span>
           )}
         </div>
         <div className="flex flex-col space-y-2">
@@ -62,19 +75,18 @@ export const SignInForm = () => {
             type="password"
             placeholder="Enter your password"
             className="py-2 px-3 rounded-lg border-light-border border focus:outline-2 focus:outline-offset-2 focus:outline-dark-accent bg-light-main-bg dark:bg-dark-main-bg"
-            {...register("password", { required: true })}
-            onChange={clearError}
+            {...register("password")}
           />
           {errors.password && (
-            <span className="text-red-500">This field is required</span>
+            <span className="text-red-500">{errors.password.message}</span>
           )}
         </div>
-        {errors.form && <p className="text-red-500">Invalid credentials</p>}
+        {formError && <p className="text-red-500">{formError}</p>}
         <div>
           <button
             type="submit"
             className="transition-all duration-500 hover:scale-105 rounded-lg hover:cursor-pointer text-dark-primary-text bg-dark-accent hover:bg-dark-accent/90 disabled:bg-dark-accent/50 disabled:hover:cursor-default w-full py-2 px-4"
-            disabled={isDisabled}
+            disabled={isSubmitting}
           >
             {isSubmitting ? <Spinner /> : "Sign In"}
           </button>
