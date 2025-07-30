@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useToken } from "./useToken";
 import { mockApi, type Conversation, type Message } from "@/api/mockApi";
 import { useConversationsContext } from "./useConversationsContext";
@@ -11,6 +11,22 @@ export const useMessages = (conversationId: string) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const isMountedRef = useRef(true);
+  const currentConversationRef = useRef(conversationId);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    currentConversationRef.current = conversationId;
+    setIsTyping(false);
+    setError(false);
+  }, [conversationId]);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const checkMessages = () => {
     return getMessages(conversationId);
@@ -69,6 +85,7 @@ export const useMessages = (conversationId: string) => {
   const sendMessage = useCallback(
     async (message: string) => {
       setError(false);
+      const messageConversationId = conversationId;
       try {
         if (!token) return;
         const userMsg = await mockApi.sendMessage(
@@ -76,6 +93,12 @@ export const useMessages = (conversationId: string) => {
           conversationId,
           message,
         );
+        if (
+          !isMountedRef.current ||
+          currentConversationRef.current !== messageConversationId
+        ) {
+          return;
+        }
         setMessages((prev) => [...prev, userMsg.message]);
 
         setIsTyping(true);
@@ -84,6 +107,14 @@ export const useMessages = (conversationId: string) => {
           conversationId,
           message,
         );
+
+        if (
+          !isMountedRef.current ||
+          currentConversationRef.current !== messageConversationId
+        ) {
+          return;
+        }
+
         setIsTyping(false);
         setMessages((prev) => [...prev, aiResponse.message]);
         storeMessages(conversationId, [
@@ -92,9 +123,14 @@ export const useMessages = (conversationId: string) => {
           aiResponse.message,
         ]);
       } catch (error) {
-        console.error("Failed to send message:", error);
-        setIsTyping(false);
-        setError(true);
+        if (
+          isMountedRef.current &&
+          currentConversationRef.current === messageConversationId
+        ) {
+          console.error("Failed to send message:", error);
+          setIsTyping(false);
+          setError(true);
+        }
       }
     },
     [token, conversationId, messages],
