@@ -12,15 +12,17 @@ export const MobileSidebar = () => {
   const { logout } = useLogout();
   return (
     <>
-      <div
-        className="fixed inset-0 bg-black opacity-50 z-40 transition-opacity duration-300"
-        onClick={closeSidebar}
-      />
+      {isDrawerOpen && (
+        <div
+          className={`fixed inset-0 bg-black opacity-50 z-40 transition-opacity duration-300`}
+          onClick={closeSidebar}
+        />
+      )}
 
       <div
         className={`
 fixed top-0 left-0 h-full z-50 bg-white dark:bg-dark-main-bg border-r border-light-border dark:border-dark-border
-transform transition-transform duration-300 ease-in-out w-64 p-4 flex flex-col space-y-4
+transform transition-transform duration-500 ease-in-out w-64 p-4 flex flex-col space-y-4
 ${isDrawerOpen ? "translate-x-0" : "-translate-x-full"}
 `}
       >

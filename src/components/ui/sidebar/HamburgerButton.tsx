@@ -8,7 +8,7 @@ export const HamburgerButton = ({ onClick }: IProps) => {
   return (
     <button
       type="button"
-      className={`fixed top-5 left-5 z-50 p-2 rounded-lg bg-white dark:bg-dark-primary border border-light-border dark:border-dark-border shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors`}
+      className={`fixed top-5 left-5 z-40 p-2 rounded-lg bg-white dark:bg-dark-primary border border-light-border dark:border-dark-border shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors`}
       onClick={onClick}
       aria-label="Open sidebar"
     >

@@ -19,7 +19,7 @@ export const DesktopSidebar = () => {
   const { logout } = useLogout();
   return (
     <div
-      className={`${isMinimized ? "w-16" : "w-full"}  min-h-dvh border-r-light-border dark:border-r-dark-border border-r p-4 flex flex-col space-y-4`}
+      className={`${isMinimized ? "max-w-16" : "max-w-[calc(100%-4rem)]"} w-full transition-all duration-300 ease min-h-dvh border-r-light-border dark:border-r-dark-border border-r p-4 flex flex-col space-y-4 truncate`}
     >
       <div
         className={`flex ${isMinimized ? "justify-center" : "justify-between"} items-center`}
