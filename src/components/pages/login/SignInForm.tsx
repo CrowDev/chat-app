@@ -1,4 +1,4 @@
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { mockApi } from "@/api/mockApi";
 import { useNavigate } from "react-router";
 import { Spinner } from "@/components/common/Spinner/Spinner";

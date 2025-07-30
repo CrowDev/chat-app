@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { SendHorizonal } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import type { InputChat as TInputChat } from "@/components/pages/chat/Chat";

@@ -1,18 +1,10 @@
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { mockApi } from "@/api/mockApi";
 import { useNavigate } from "react-router";
 import { Spinner } from "@/components/common/Spinner/Spinner";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
 import { useEffect, useRef, useState } from "react";
-
-interface ISignUpForm {
-  fullname: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  form: string;
-}
 
 const signUpSchema = z
   .object({
