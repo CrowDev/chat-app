@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const MD_BREAKPOINT = 768;
 
@@ -30,29 +30,29 @@ export const useSidebarToggle = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleSidebar = () => {
+  const toggleSidebar = useCallback(() => {
     if (isMobile) {
       setIsDrawerOpen(!isDrawerOpen);
     } else {
       setIsMinimized(!isMinimized);
     }
-  };
+  }, [isMobile, isDrawerOpen, isMinimized]);
 
-  const closeSidebar = () => {
+  const closeSidebar = useCallback(() => {
     if (isMobile) {
       setIsDrawerOpen(false);
     } else {
       setIsMinimized(true);
     }
-  };
+  }, [isMobile]);
 
-  const openSidebar = () => {
+  const openSidebar = useCallback(() => {
     if (isMobile) {
       setIsDrawerOpen(true);
     } else {
       setIsMinimized(false);
     }
-  };
+  }, [isMobile]);
 
   return {
     isMinimized,

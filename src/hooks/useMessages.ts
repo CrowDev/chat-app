@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useToken } from "./useToken";
 import { mockApi, type Conversation, type Message } from "@/api/mockApi";
 import { useConversationsContext } from "./useConversationsContext";
@@ -48,6 +48,7 @@ export const useMessages = (conversationId: string) => {
   };
 
   useEffect(() => {
+    setMessages([]);
     conversationHandler();
   }, [token, conversationId]);
 
@@ -65,32 +66,39 @@ export const useMessages = (conversationId: string) => {
     }
   };
 
-  const sendMessage = async (message: string) => {
-    setError(false);
-    try {
-      if (!token) return;
-      const userMsg = await mockApi.sendMessage(token, conversationId, message);
-      setMessages((prev) => [...prev, userMsg.message]);
+  const sendMessage = useCallback(
+    async (message: string) => {
+      setError(false);
+      try {
+        if (!token) return;
+        const userMsg = await mockApi.sendMessage(
+          token,
+          conversationId,
+          message,
+        );
+        setMessages((prev) => [...prev, userMsg.message]);
 
-      setIsTyping(true);
+        setIsTyping(true);
 
-      const aiResponse = await mockApi.simulateAIResponse(
-        conversationId,
-        message,
-      );
-      setIsTyping(false);
-      setMessages((prev) => [...prev, aiResponse.message]);
-      storeMessages(conversationId, [
-        ...messages,
-        userMsg.message,
-        aiResponse.message,
-      ]);
-    } catch (error) {
-      console.error("Failed to send message:", error);
-      setIsTyping(false);
-      setError(true);
-    }
-  };
+        const aiResponse = await mockApi.simulateAIResponse(
+          conversationId,
+          message,
+        );
+        setIsTyping(false);
+        setMessages((prev) => [...prev, aiResponse.message]);
+        storeMessages(conversationId, [
+          ...messages,
+          userMsg.message,
+          aiResponse.message,
+        ]);
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        setIsTyping(false);
+        setError(true);
+      }
+    },
+    [token, conversationId, messages],
+  );
   return {
     messages,
     sendMessage,
