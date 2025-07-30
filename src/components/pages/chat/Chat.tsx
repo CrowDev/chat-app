@@ -3,20 +3,33 @@ import { InputChat } from "@/components/common/InputChat/InputChat";
 import { useMessages } from "@/hooks/useMessages";
 import { Dot } from "lucide-react";
 import { ErrorSendMessage } from "@/components/common/Error/ErrorSendMessage";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useConversationsContext } from "@/hooks/useConversationsContext";
 import { Spinner } from "@/components/common/Spinner/Spinner";
 import type { Message } from "@/api/mockApi";
+import z from "zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export const inputSchema = z.object({
+  input: z.string(),
+});
+
+export type InputChat = z.infer<typeof inputSchema>;
 
 export const Chat = () => {
   const navigate = useNavigate();
   const chatContainerRef = useRef<HTMLUListElement>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const { conversationId } = useParams();
   if (!conversationId) {
-    navigate("/chat");
     return;
   }
+  const methods = useForm<InputChat>({
+    resolver: zodResolver(inputSchema),
+  });
+  const { handleSubmit, setValue, setFocus } = methods;
+  setFocus("input");
+
   const { messages, sendMessage, isTyping, error, loading } =
     useMessages(conversationId);
 
@@ -46,9 +59,12 @@ export const Chat = () => {
     return conversation.title;
   };
 
-  const handleSendMessage = async () => {
-    if (message) {
-      sendMessage(message);
+  const onSubmit = async (data: InputChat) => {
+    const { input } = data;
+    if (input) {
+      setValue("input", "");
+      await sendMessage(input);
+      setFocus("input");
     }
   };
 
@@ -94,7 +110,11 @@ export const Chat = () => {
         </ul>
       </div>
       <div className="h-[15vh]">
-        <InputChat sendFn={handleSendMessage} setMessage={setMessage} />
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <InputChat />
+          </form>
+        </FormProvider>
       </div>
     </div>
   );
