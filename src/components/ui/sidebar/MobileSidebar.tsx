@@ -19,7 +19,7 @@ export const MobileSidebar = () => {
 
       <div
         className={`
-fixed top-0 left-0 h-full z-50 bg-white dark:bg-dark-primary border-r border-light-border dark:border-dark-border
+fixed top-0 left-0 h-full z-50 bg-white dark:bg-dark-main-bg border-r border-light-border dark:border-dark-border
 transform transition-transform duration-300 ease-in-out w-64 p-4 flex flex-col space-y-4
 ${isDrawerOpen ? "translate-x-0" : "-translate-x-full"}
 `}
